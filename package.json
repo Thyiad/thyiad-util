@@ -1,5 +1,5 @@
 {
-  "name": "util",
+  "name": "@thyiad/util",
   "version": "0.1.0",
   "description": "#### 介绍",
   "main": "lib/index.js",
