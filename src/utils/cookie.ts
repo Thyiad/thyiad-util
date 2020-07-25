@@ -1,3 +1,3 @@
-import Cookies from "js-cookie";
+import * as cookies from "js-cookie";
 
-export default Cookies;
+export default cookies;

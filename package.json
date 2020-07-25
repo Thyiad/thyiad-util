@@ -1,6 +1,6 @@
 {
   "name": "@thyiad/util",
-  "version": "0.3.8",
+  "version": "0.3.13",
   "description": "一些 utils 函数",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

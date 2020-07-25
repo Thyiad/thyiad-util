@@ -1,9 +1,18 @@
-import { ResponseData, UITypes } from "../../types/index";
+import { UITypes } from "../enum";
 import axios from "axios";
 import * as constant from "./constant";
 import Cookies from "./cookie";
 import { toast } from "./ui";
 import { simpleStringify } from "./str";
+
+export interface ResponseData<T = any> {
+  /** 状态码 */
+  code: number;
+  /** 提示语 */
+  message: string;
+  /** 数据 */
+  data: T;
+}
 
 let reqOptions = {
   loginCookeyKey: constant.LOGIN_COOKIE_KEY,

@@ -1,4 +1,4 @@
-import { UITypes } from "../../types/index";
+import { UITypes } from "../enum";
 
 export interface UIImplements {
   msgLoading?: typeof msgLoading;
