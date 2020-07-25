@@ -4,6 +4,7 @@ import storage from "./utils/storage";
 import url from "./utils/url";
 import ui, { UIImplements } from "./utils/ui";
 import req, { ReqImplements } from "./utils/req";
+export { UITypes, ResponseData } from "../types/index";
 
 export const thyStr = str;
 export const thyCookie = cookie;
