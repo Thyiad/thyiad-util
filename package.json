@@ -17,8 +17,7 @@
   "author": "Thyiad",
   "license": "MIT",
   "files": [
-    "lib/**/*",
-    "types/**/*"
+    "lib/**/*"
   ],
   "dependencies": {
     "axios": "^0.19.2",
