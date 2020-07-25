@@ -30,7 +30,7 @@ export const msgLoading = (msg: string): any => {
  * @param msg 需要toast的消息内容
  * @param type
  */
-export const toast = (msg: string, type: UITypes): any => {
+export const toast = (msg: string, type: UITypes = UITypes.success): any => {
   if (!implments.toast) {
     console.log("toast未实现");
     return;
@@ -47,7 +47,7 @@ export const toast = (msg: string, type: UITypes): any => {
  */
 export const alert = (
   msg: string,
-  type: UITypes,
+  type: UITypes = UITypes.success,
   content: any = "",
   ok?: () => void
 ) => {
