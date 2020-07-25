@@ -5,6 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "rm -rf lib && tsc",
+    "publish": "npm run build && npm publish --access=public",
     "lint": "eslint src --fix --ext .ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
