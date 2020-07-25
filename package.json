@@ -1,11 +1,12 @@
 {
   "name": "@thyiad/util",
-  "version": "0.1.0",
+  "version": "0.3.4",
   "description": "一些 utils 函数",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "build": "rm -rf lib && tsc",
-    "publish": "npm run build && npm publish --access=public",
+    "publish": "npm publish",
     "lint": "eslint src --fix --ext .ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,6 +16,10 @@
   },
   "author": "Thyiad",
   "license": "MIT",
+  "files": [
+    "lib/**/*",
+    "types/**/*"
+  ],
   "dependencies": {
     "axios": "^0.19.2",
     "js-cookie": "^2.2.1",

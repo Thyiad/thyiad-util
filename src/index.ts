@@ -12,10 +12,11 @@ export const thyUrl = url;
 export const thyUI = ui;
 export const thyReq = req;
 
-interface InitOptions {
+export interface InitOptions {
   ui: UIImplements;
   req: ReqImplements;
 }
+export type { UIImplements, ReqImplements };
 
 export const initImplements = (options: InitOptions) => {
   ui.initImplements(options.ui);
