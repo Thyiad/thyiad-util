@@ -1,3 +1,8 @@
+import {
+  getBirthdayForIdCard as _getBirthdayForIdCard,
+  getGenderForIdCard as _getGenderForIdCard,
+} from "./idCard";
+
 const _stringify = (data: { [key: string]: any }) => {
   return `{${Object.keys(data)
     .map((key) => {
@@ -71,8 +76,20 @@ export const jsonParse = (json: string, defaultValue?: any) => {
   }
 };
 
+/**
+ * 根据身份证自动获取生日
+ */
+export const getBirthdayForIdCard = _getBirthdayForIdCard;
+
+/**
+ * 根据身份证自动获取性别
+ */
+export const getGenderForIdCard = _getGenderForIdCard;
+
 export default {
   simpleStringify,
   jsonStringify,
   jsonParse,
+  getBirthdayForIdCard,
+  getGenderForIdCard,
 };
