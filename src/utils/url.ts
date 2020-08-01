@@ -19,9 +19,21 @@ export const getBaseHost = (hostname = ""): string => {
  * 通过url解析参数
  * @param urlPath
  */
-export const getQuery = (urlPath?: string) => {
+export const getQuery = (urlPath?: string): { [key: string]: string } => {
   urlPath = urlPath || window.location.search;
-  return qs.parseUrl(urlPath).query;
+  const targetQuery: { [key: string]: string } = {};
+  const parseQuery = qs.parseUrl(urlPath).query;
+  Object.keys(parseQuery).forEach((key) => {
+    const val = parseQuery[key];
+    if (val == null) {
+      targetQuery[key] = "";
+    } else if (Array.isArray(val)) {
+      targetQuery[key] = val[val.length - 1];
+    } else {
+      targetQuery[key] = val;
+    }
+  });
+  return targetQuery;
 };
 
 export default {

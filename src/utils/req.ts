@@ -109,7 +109,8 @@ const request = <T>(
       return Promise.reject(responseData);
     })
     .catch((err) => {
-      config?.noToast && toast(err.message || "未知错误", UITypes.error);
+      config?.noToast !== true &&
+        toast(err.message || err.msg || "未知错误", UITypes.error);
       return Promise.reject(err);
     });
 };
