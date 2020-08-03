@@ -57,19 +57,19 @@ const axiosInstance = axios.create({
   responseType: "json",
 });
 
-/**
- * request中间件
- */
-axiosInstance.interceptors.request.use((req) => {
-  console.log(
-    `======== request start ======== method: ${req.method} url: ${
-      req.url
-    } headers:${simpleStringify(req.headers || {})} params: ${simpleStringify(
-      req.data || req.params || {}
-    )}`
-  );
-  return req;
-});
+// /**
+//  * request中间件
+//  */
+// axiosInstance.interceptors.request.use((req) => {
+//   console.log(
+//     `======== request start ======== method: ${req.method} url: ${
+//       req.url
+//     } headers:${simpleStringify(req.headers || {})} params: ${simpleStringify(
+//       req.data || req.params || {}
+//     )}`
+//   );
+//   return req;
+// });
 
 const request = <T>(
   type: "get" | "post",
