@@ -40,25 +40,32 @@ export const getDate = (dateStr): Date | undefined => {
  * @param date 日期
  * @param style 格式，1: yyyy-mm-dd, 2: yyyy-mm-dd hh:mm:ss
  */
-export const formateDate = (date, style = 1, spliteDot = "-") => {
-  if (date == null || date === "") {
+export const formateDate = (dateObj, style = 1, hourDiff = 0) => {
+  if (dateObj == null || dateObj === "") {
     console.log("formateDate 的 date 参数为空");
     return "";
   }
   if (
     !["[object String]", "[object Date]", "[object Number]"].includes(
-      Object.prototype.toString.call(date)
+      Object.prototype.toString.call(dateObj)
     )
   ) {
     console.log("formateDate 的 date 参数不合法");
     return "";
   }
 
-  date = getDate(date);
+  let date = getDate(dateObj);
+  if (!date) {
+    return "";
+  }
 
-  let year = date.getFullYear();
-  let month = date.getMonth() + 1;
-  let day = date.getDate();
+  if (hourDiff) {
+    date.setHours(date.getHours() + hourDiff);
+  }
+
+  let year: string | number = date.getFullYear();
+  let month: string | number = date.getMonth() + 1;
+  let day: string | number = date.getDate();
   if (month < 10) {
     month = "0" + month;
   }
@@ -67,24 +74,24 @@ export const formateDate = (date, style = 1, spliteDot = "-") => {
   }
 
   if (style === 1) {
-    return `${year}${spliteDot}${month}${spliteDot}${day}`;
+    return `${year}-${month}-${day}`;
   } else if (style === 2) {
-    let hours = date.getHours();
+    let hours: string | number = date.getHours();
     if (hours < 10) {
       hours = "0" + hours;
     }
-    let minutes = date.getMinutes();
+    let minutes: string | number = date.getMinutes();
     if (minutes < 10) {
       minutes = "0" + minutes;
     }
-    let seconds = date.getSeconds();
+    let seconds: string | number = date.getSeconds();
     if (seconds < 10) {
       seconds = "0" + seconds;
     }
-    return `${year}${spliteDot}${month}${spliteDot}${day} ${hours}:${minutes}:${seconds}`;
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   }
 
-  return `${year}${spliteDot}${month}${spliteDot}${day}`;
+  return `${year}-${month}-${day}`;
 };
 
 /**
