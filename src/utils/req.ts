@@ -3,7 +3,7 @@ import axios from "axios";
 import * as constant from "./constant";
 import Cookies from "./cookie";
 import { toast } from "./ui";
-import { simpleStringify } from "./str";
+import env from "./env";
 
 export interface ResponseData<T = any> {
   /** 状态码 */
@@ -19,6 +19,9 @@ let reqOptions = {
   tokenHeaderName: constant.TOKEN_HEADER_NAME,
   ajaxStatus: constant.AJAX_STATUS,
   logout: () => {
+    if (!env.canUseWindow()) {
+      return;
+    }
     Cookies.remove(reqOptions.loginCookeyKey);
     window.location.href = `/login?target=${encodeURIComponent(
       window.location.href
@@ -80,7 +83,9 @@ const request = <T>(
 ): Promise<T> => {
   headers = headers || {};
   headers[reqOptions.tokenHeaderName] =
-    Cookies.get(reqOptions.loginCookeyKey) || "";
+    headers[reqOptions.tokenHeaderName] ||
+    Cookies.get(reqOptions.loginCookeyKey) ||
+    "";
   if (config?.formType) {
     headers["Content-Type"] = "application/x-www-form-urlencoded";
   }

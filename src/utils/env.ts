@@ -1,16 +1,38 @@
-const _ua = window.navigator.userAgent.toLowerCase();
+const canUseWindow = () => {
+  return typeof window !== undefined;
+};
 
-export const isIos = /iphone os/i.test(_ua) || /ipad/i.test(_ua);
-export const isAndroid = /android/i.test(_ua);
-export const isWechat = /micromessenger/i.test(_ua);
-/**
- * 是否微信小程序，仅微信7.0以上生效
- */
-export const isWechatMiniProgram = isWechat && /miniprogram/i.test(_ua);
+const getUserAgent = (ua?: string) => {
+  if (ua) {
+    return ua.toLowerCase();
+  }
+  return canUseWindow() ? window.navigator.userAgent.toLowerCase() : "";
+};
+
+const isWechat = (userAgent?: string) => {
+  const ua = getUserAgent(userAgent);
+  return /micromessenger/i.test(getUserAgent(ua));
+};
+
+const isAndroid = (userAgent?: string) => {
+  const ua = getUserAgent(userAgent);
+  return /android/i.test(getUserAgent(ua));
+};
+
+const isIos = (userAgent?: string) => {
+  const ua = getUserAgent(userAgent);
+  return /iphone os/i.test(ua) || /ipad/i.test(ua);
+};
+
+const isWechatMinProgram = (userAgent?: string) => {
+  const ua = getUserAgent(userAgent);
+  return isWechat(ua) && ua.indexOf("miniprogram") > -1;
+};
 
 export default {
+  canUseWindow,
   isIos,
   isAndroid,
   isWechat,
-  isWechatMiniProgram,
+  isWechatMinProgram,
 };

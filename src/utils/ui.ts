@@ -19,7 +19,7 @@ export const initImplements = (options: UIImplements) => {
  */
 export const msgLoading = (msg: string): any => {
   if (!implments.msgLoading) {
-    console.log("msgLoading未实现");
+    console.log("msgLoading未实现", msg);
     return;
   }
   return implments.msgLoading(msg);
@@ -32,7 +32,7 @@ export const msgLoading = (msg: string): any => {
  */
 export const toast = (msg: string, type: UITypes = UITypes.success): any => {
   if (!implments.toast) {
-    console.log("toast未实现");
+    console.log("toast未实现", msg);
     return;
   }
 
@@ -52,7 +52,7 @@ export const alert = (
   ok?: () => void
 ) => {
   if (!implments.alert) {
-    console.log("alert未实现");
+    console.log("alert未实现", msg);
     return;
   }
 
@@ -72,7 +72,7 @@ export const confirm = (
   content?: string
 ) => {
   if (!implments.confirm) {
-    console.log("confirm未实现");
+    console.log("confirm未实现", msg);
     return;
   }
 
