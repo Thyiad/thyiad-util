@@ -1,5 +1,5 @@
 const canUseWindow = () => {
-  return typeof window !== undefined;
+  return typeof window !== "undefined";
 };
 
 const getUserAgent = (ua?: string) => {
