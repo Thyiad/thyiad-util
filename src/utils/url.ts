@@ -7,7 +7,7 @@ import env from "./env";
  * @param hostname 需要解析的域名，默认当前域名
  */
 export const getBaseHost = (hostname = ""): string => {
-  hostname = hostname || (env.canUseWindow() && window.location.hostname) || "";
+  hostname = hostname || (env.isBrowser() && window.location.hostname) || "";
   if (!/^([^.]+\.){2}[^.]+$/.test(hostname)) {
     return hostname;
   }
@@ -21,7 +21,7 @@ export const getBaseHost = (hostname = ""): string => {
  * @param urlPath
  */
 export const getQuery = (urlPath?: string): { [key: string]: string } => {
-  urlPath = urlPath || (env.canUseWindow() && window.location.search) || "";
+  urlPath = urlPath || (env.isBrowser() && window.location.search) || "";
   const targetQuery: { [key: string]: string } = {};
   const parseQuery = qs.parseUrl(urlPath).query;
   Object.keys(parseQuery).forEach((key) => {
