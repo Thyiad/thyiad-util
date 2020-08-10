@@ -19,7 +19,7 @@ let reqOptions = {
   tokenHeaderName: constant.TOKEN_HEADER_NAME,
   ajaxStatus: constant.AJAX_STATUS,
   logout: () => {
-    if (!env.isBrowser()) {
+    if (!env.canUseWindow()) {
       return;
     }
     Cookies.remove(reqOptions.loginCookeyKey);

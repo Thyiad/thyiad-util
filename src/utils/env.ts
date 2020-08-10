@@ -1,16 +1,12 @@
-const isBrowser = new Function(
-  "try {return this===window;}catch(e){ return false;}"
-);
-
-const isNode = new Function(
-  "try {return this===global;}catch(e){return false;}"
-);
+const canUseWindow = () => {
+  return typeof window !== undefined;
+};
 
 const getUserAgent = (ua?: string) => {
   if (ua) {
     return ua.toLowerCase();
   }
-  return isBrowser() ? window.navigator.userAgent.toLowerCase() : "";
+  return canUseWindow() ? window.navigator.userAgent.toLowerCase() : "";
 };
 
 const isWechat = (userAgent?: string) => {
@@ -34,8 +30,7 @@ const isWechatMinProgram = (userAgent?: string) => {
 };
 
 export default {
-  isBrowser,
-  isNode,
+  canUseWindow,
   isIos,
   isAndroid,
   isWechat,
