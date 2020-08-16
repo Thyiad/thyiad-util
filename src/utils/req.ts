@@ -4,6 +4,7 @@ import * as constant from "./constant";
 import Cookies from "./cookie";
 import { toast } from "./ui";
 import env from "./env";
+import qs from "query-string";
 
 export interface ResponseData<T = any> {
   /** 状态码 */
@@ -84,9 +85,13 @@ const request = <T>(
           headers,
           data,
         })
-      : axiosInstance.post<ResponseData<T>>(url, data, {
-          headers,
-        });
+      : axiosInstance.post<ResponseData<T>>(
+          url,
+          config?.formType ? qs.stringify(data) : data,
+          {
+            headers,
+          }
+        );
 
   return req
     .then((res) => {
