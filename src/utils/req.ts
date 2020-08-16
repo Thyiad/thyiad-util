@@ -9,7 +9,7 @@ export interface ResponseData<T = any> {
   /** 状态码 */
   code: number;
   /** 提示语 */
-  message: string;
+  msg: string;
   /** 数据 */
   data: T;
 }
@@ -18,6 +18,7 @@ let reqOptions = {
   loginCookeyKey: constant.LOGIN_COOKIE_KEY,
   tokenHeaderName: constant.TOKEN_HEADER_NAME,
   ajaxStatus: constant.AJAX_STATUS,
+  ajaxData: constant.AJAX_DATA,
   logout: () => {
     if (!env.canUseWindow()) {
       return;
@@ -29,26 +30,13 @@ let reqOptions = {
   },
 };
 
-export interface ReqImplements {
-  loginCookeyKey?: string;
-  tokenHeaderName?: string;
-  ajaxStatus?: typeof reqOptions.ajaxStatus;
-  logout?: () => void;
-}
+export type ReqImplements = typeof reqOptions;
 
 const initImplements = (options: ReqImplements) => {
-  if (options.loginCookeyKey) {
-    reqOptions.loginCookeyKey = options.loginCookeyKey;
-  }
-  if (options.tokenHeaderName) {
-    reqOptions.tokenHeaderName = options.tokenHeaderName;
-  }
-  if (options.ajaxStatus) {
-    reqOptions.ajaxStatus = options.ajaxStatus;
-  }
-  if (options.logout) {
-    reqOptions.logout = options.logout;
-  }
+  reqOptions = {
+    ...reqOptions,
+    ...options,
+  };
 };
 
 /**
@@ -104,10 +92,14 @@ const request = <T>(
     .then((res) => {
       const responseData: ResponseData = res.data || {};
 
-      if (responseData.code === reqOptions.ajaxStatus.success) {
+      if (
+        responseData[reqOptions.ajaxData.code] === reqOptions.ajaxStatus.success
+      ) {
         return responseData.data;
-      } else if (responseData.code === reqOptions.ajaxStatus.expired) {
-        responseData.message = "token已过期，请重新登录";
+      } else if (
+        responseData[reqOptions.ajaxData.code] === reqOptions.ajaxStatus.expired
+      ) {
+        responseData.msg = "token已过期，请重新登录";
         reqOptions.logout();
       }
 
@@ -115,7 +107,10 @@ const request = <T>(
     })
     .catch((err) => {
       config?.noToast !== true &&
-        toast(err.message || err.msg || "未知错误", UITypes.error);
+        toast(
+          err[reqOptions.ajaxData.msg] || err.message || "未知错误",
+          UITypes.error
+        );
       return Promise.reject(err);
     });
 };

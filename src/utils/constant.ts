@@ -5,3 +5,8 @@ export const AJAX_STATUS = {
   error: 3000,
   expired: 4000,
 };
+export const AJAX_DATA = {
+  code: "code",
+  msg: "msg",
+  data: "data",
+};
