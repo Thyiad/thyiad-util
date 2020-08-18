@@ -83,7 +83,8 @@ const request = <T>(
     type === "get"
       ? axiosInstance.get<ResponseData<T>>(url, {
           headers,
-          data,
+          ...config,
+          params: data,
         })
       : axiosInstance.post<ResponseData<T>>(
           url,
