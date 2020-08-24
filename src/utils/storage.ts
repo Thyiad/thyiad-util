@@ -1,4 +1,4 @@
-import env from "./env";
+import * as env from "./env";
 
 export const session = {
   get: (key: string, defaultValue: any = "") => {
@@ -30,9 +30,4 @@ export const local = {
     }
     window.localStorage.setItem(key, value);
   },
-};
-
-export default {
-  session,
-  local,
 };

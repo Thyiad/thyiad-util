@@ -1,9 +1,9 @@
 import { UITypes } from "../enum";
 import axios from "axios";
 import * as constant from "./constant";
-import Cookies from "./cookie";
+import { cookies } from "./cookie";
 import { toast } from "./ui";
-import env from "./env";
+import * as env from "./env";
 import qs from "query-string";
 
 export interface ResponseData<T = any> {
@@ -24,7 +24,7 @@ let reqOptions = {
     if (!env.canUseWindow()) {
       return;
     }
-    Cookies.remove(reqOptions.loginCookeyKey);
+    cookies.remove(reqOptions.loginCookeyKey);
     window.location.href = `/login?target=${encodeURIComponent(
       window.location.href
     )}`;
@@ -33,7 +33,7 @@ let reqOptions = {
 
 export type ReqImplements = typeof reqOptions;
 
-const initImplements = (options: ReqImplements) => {
+export const initImplements = (options: ReqImplements) => {
   reqOptions = {
     ...reqOptions,
     ...options,
@@ -73,7 +73,7 @@ const request = <T>(
   headers = headers || {};
   headers[reqOptions.tokenHeaderName] =
     headers[reqOptions.tokenHeaderName] ||
-    Cookies.get(reqOptions.loginCookeyKey) ||
+    cookies.get(reqOptions.loginCookeyKey) ||
     "";
   if (config?.formType) {
     headers["Content-Type"] = "application/x-www-form-urlencoded";
@@ -137,10 +137,4 @@ export const post = <T>(
   config?: { noToast?: boolean; formType?: boolean }
 ): Promise<T> => {
   return request("post", url, data, headers, config);
-};
-
-export default {
-  initImplements,
-  get,
-  post,
 };

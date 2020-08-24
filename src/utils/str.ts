@@ -29,6 +29,8 @@ export const simpleStringify = (
  * JSON.stringy
  * @param data 格式化数据
  * @param defaultValue 解析错误后的数据
+ * @param beautiful 是否有缩进
+ * @param html 是否要返回html，会针对换行符等做处理，此处仅为了兼容而保留，建议使用 getHtml
  */
 export const jsonStringify = (
   data: any,
@@ -42,14 +44,10 @@ export const jsonStringify = (
       : JSON.stringify(data);
     if (html) {
       if (!content) {
-        return "";
+        return defaultValue;
       }
-      const r = content
-        .replace(/\n|\\n/g, "<br>")
-        .replace(/\t/g, "&nbsp;")
-        .replace(/\\"/g, "")
-        .replace(/,/g, ",&nbsp;");
-      return r;
+
+      return getHtml(content);
     }
     return content;
   } catch (e) {
@@ -86,10 +84,39 @@ export const getBirthdayForIdCard = _getBirthdayForIdCard;
  */
 export const getGenderForIdCard = _getGenderForIdCard;
 
-export default {
-  simpleStringify,
-  jsonStringify,
-  jsonParse,
-  getBirthdayForIdCard,
-  getGenderForIdCard,
+/**
+ * 获取文件名字
+ * 从最后一个.号开始截取
+ * @param path 路径
+ */
+export const getFileName = (path: string): string => {
+  if (!path) {
+    return "";
+  }
+
+  const index = path.lastIndexOf("/");
+  if (index < 0) {
+    return path;
+  }
+
+  return path.substr(index + 1);
+};
+
+/**
+ * 把html字符串格式化：\n、\t、\"
+ * @param html html文本
+ * @param onlyEnter 是否仅处理换行符
+ */
+export const getHtml = (html: string | object, onlyEnter = false) => {
+  const content =
+    typeof html === "string" ? html : JSON.stringify(html, null, "\t");
+  if (!content) {
+    return "";
+  }
+  let r = content.replace(/\n|\\n/g, "<br>");
+  if (onlyEnter) {
+    return r;
+  }
+  r = r.replace(/\t/g, "&nbsp;").replace(/\\"/g, "").replace(/,/g, ",&nbsp;");
+  return r;
 };

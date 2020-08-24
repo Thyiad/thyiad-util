@@ -1,5 +1,5 @@
 import qs from "query-string";
-import env from "./env";
+import * as env from "./env";
 
 /**
  * 获取基域名
@@ -35,9 +35,4 @@ export const getQuery = (urlPath?: string): { [key: string]: string } => {
     }
   });
   return targetQuery;
-};
-
-export default {
-  getBaseHost,
-  getQuery,
 };

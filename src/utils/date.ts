@@ -182,10 +182,3 @@ export const getDateSpan = (timeValue): DateDiff => {
 
   return result;
 };
-
-export default {
-  getDate,
-  formateDate,
-  getFullAge,
-  getDateSpan,
-};

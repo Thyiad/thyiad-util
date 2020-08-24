@@ -78,11 +78,3 @@ export const confirm = (
 
   return implments.confirm(msg, ok, cancel, content);
 };
-
-export default {
-  initImplements,
-  msgLoading,
-  toast,
-  alert,
-  confirm,
-};

@@ -1,15 +1,18 @@
-import _str from "./utils/str";
-import _cookie from "./utils/cookie";
-import _storage from "./utils/storage";
-import _url from "./utils/url";
-import _ui, { UIImplements } from "./utils/ui";
-import _req, { ResponseData, ReqImplements } from "./utils/req";
-import _regex from "./utils/regex";
-import _env from "./utils/env";
-import _date from "./utils/date";
+import * as _str from "./utils/str";
+import { cookies } from "./utils/cookie";
+import * as _storage from "./utils/storage";
+import * as _url from "./utils/url";
+import * as _ui from "./utils/ui";
+import * as _req from "./utils/req";
+import * as _regex from "./utils/regex";
+import * as _env from "./utils/env";
+import * as _date from "./utils/date";
+
+import { UIImplements } from "./utils/ui";
+import { ResponseData, ReqImplements } from "./utils/req";
 
 export const thyStr = _str;
-export const thyCookie = _cookie;
+export const thyCookie = cookies;
 export const thyStorage = _storage;
 export const thyUrl = _url;
 export const thyUI = _ui;
@@ -20,7 +23,6 @@ export const thyDate = _date;
 
 export type { UIImplements, ReqImplements, ResponseData };
 export { UITypes } from "./enum";
-
 export interface InitOptions {
   ui: UIImplements;
   req: ReqImplements;
