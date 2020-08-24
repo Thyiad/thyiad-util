@@ -40,12 +40,16 @@ export const getDate = (dateStr): Date | undefined => {
  * @param date 日期
  * @param style 格式，1: yyyy-mm-dd, 2: yyyy-mm-dd hh:mm:ss
  */
-export const formateDate = (dateObj, style = 1, hourDiff = 0) => {
+export const formatDate = (dateObj: any, style = 1, hourDiff = 0) => {
   if (dateObj == null || dateObj === "") {
     console.log("formateDate 的 date 参数为空");
     return "";
   }
+  const isMoment =
+    Object.prototype.toString.call(dateObj) === "[object Object]" &&
+    typeof dateObj.toDate === "function";
   if (
+    !isMoment &&
     !["[object String]", "[object Date]", "[object Number]"].includes(
       Object.prototype.toString.call(dateObj)
     )
@@ -54,7 +58,7 @@ export const formateDate = (dateObj, style = 1, hourDiff = 0) => {
     return "";
   }
 
-  let date = getDate(dateObj);
+  let date = isMoment ? dateObj.toDate() : getDate(dateObj);
   if (!date) {
     return "";
   }
@@ -181,4 +185,25 @@ export const getDateSpan = (timeValue): DateDiff => {
   result.day = String(day).padStart(2, "0");
 
   return result;
+};
+
+/**
+ * 获取时间段
+ * @param h
+ */
+export const getTimeNameFromHour = (h: number) => {
+  if (h >= 6 && h < 9) {
+    return "早上";
+  }
+  if (h >= 9 && h < 12) {
+    return "上午";
+  }
+  if (h >= 12 && h < 14) {
+    return "中午";
+  }
+  if (h >= 12 && h < 19) {
+    return "下午";
+  }
+
+  return "晚上";
 };
