@@ -31,7 +31,7 @@ let reqOptions = {
   },
 };
 
-export type ReqImplements = typeof reqOptions;
+export type ReqImplements = Partial<typeof reqOptions>;
 
 export const initImplements = (options: ReqImplements) => {
   reqOptions = {
