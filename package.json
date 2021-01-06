@@ -20,7 +20,7 @@
     "lib/**/*"
   ],
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "js-cookie": "^2.2.1",
     "query-string": "^6.13.1"
   },
