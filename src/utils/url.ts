@@ -17,7 +17,7 @@ export const getBaseHost = (hostname = ""): string => {
 };
 
 /**
- * 通过url解析参数
+ * 通过 url 解析参数
  * @param urlPath
  */
 export const getQuery = (urlPath?: string): { [key: string]: string } => {
@@ -35,4 +35,24 @@ export const getQuery = (urlPath?: string): { [key: string]: string } => {
     }
   });
   return targetQuery;
+};
+
+/**
+ * 格式化 url
+ * @param pathname
+ * @param params
+ */
+export const formatUrl = (
+  pathname: string,
+  params: { [key: string]: string }
+) => {
+  let search = Object.keys(params)
+    .map((paramKey) => {
+      return `${paramKey}=${params[paramKey]}`;
+    })
+    .join("&");
+  if (search) {
+    search = `?${search}`;
+  }
+  return `${pathname}${search}`;
 };
