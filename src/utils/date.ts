@@ -13,7 +13,7 @@ export const getDate = (dateStr): Date | undefined => {
     return dateStr;
   } else if (type === "[object String]") {
     // yyyy-mm-dd的兼容性不好
-    const arr = dateStr.split(/[- :]/);
+    const arr = dateStr.split(/[- :T]/);
     let date =
       arr.length >= 3
         ? new Date(
@@ -22,7 +22,7 @@ export const getDate = (dateStr): Date | undefined => {
             arr[2],
             arr[3] || 0,
             arr[4] || 0,
-            arr[5] || 0
+            parseInt(arr[5] || 0)
           )
         : new Date(dateStr);
     if (Number.isNaN(date.getDate())) {
