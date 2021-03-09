@@ -103,11 +103,23 @@ const request = <T>(
       const responseData: ResponseData = res.data || {};
 
       if (
-        responseData[reqOptions.ajaxData.code] === reqOptions.ajaxStatus.success
+        responseData[reqOptions.ajaxData.code] ===
+          reqOptions.ajaxStatus.success ||
+        // @ts-ignore
+        (Array.isArray(reqOptions.ajaxStatus.success) &&
+          reqOptions.ajaxStatus.success.includes(
+            responseData[reqOptions.ajaxData.code]
+          ))
       ) {
         return responseData.data;
       } else if (
-        responseData[reqOptions.ajaxData.code] === reqOptions.ajaxStatus.expired
+        responseData[reqOptions.ajaxData.code] ===
+          reqOptions.ajaxStatus.expired ||
+        // @ts-ignore
+        (Array.isArray(reqOptions.ajaxStatus.expired) &&
+          reqOptions.ajaxStatus.expired.includes(
+            responseData[reqOptions.ajaxData.code]
+          ))
       ) {
         responseData.msg = "token已过期，请重新登录";
         reqOptions.logout();
