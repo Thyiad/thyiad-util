@@ -1,5 +1,5 @@
 import { UITypes } from "../enum";
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import * as constant from "./constant";
 import { cookies } from "./cookie";
 import { toast } from "./ui";
@@ -62,13 +62,16 @@ const axiosInstance = axios.create({
 //   );
 //   return req;
 // });
-
+type RequestConfig = {
+  noToast?: boolean;
+  formType?: boolean;
+} & AxiosRequestConfig;
 const request = <T>(
   type: "get" | "post",
   url: string,
   data?: any,
   headers?: { [key: string]: string },
-  config?: { noToast?: boolean; formType?: boolean }
+  config?: RequestConfig
 ): Promise<T> => {
   headers = headers || {};
   headers[reqOptions.tokenHeaderName] =
@@ -82,14 +85,15 @@ const request = <T>(
   const req =
     type === "get"
       ? axiosInstance.get<ResponseData<T>>(url, {
-          headers,
           ...config,
+          headers,
           params: data,
         })
       : axiosInstance.post<ResponseData<T>>(
           url,
           config?.formType ? qs.stringify(data) : data,
           {
+            ...config,
             headers,
           }
         );
@@ -125,7 +129,7 @@ export const get = <T>(
   url: string,
   data?: { [key: string]: any },
   headers?: { [key: string]: string },
-  config?: { noToast?: boolean; formType?: boolean }
+  config?: RequestConfig
 ): Promise<T> => {
   return request("get", url, data, headers, config);
 };
@@ -134,7 +138,7 @@ export const post = <T>(
   url: string,
   data?: { [key: string]: any },
   headers?: { [key: string]: string },
-  config?: { noToast?: boolean; formType?: boolean }
+  config?: RequestConfig
 ): Promise<T> => {
   return request("post", url, data, headers, config);
 };
