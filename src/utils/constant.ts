@@ -1,9 +1,9 @@
 export const LOGIN_COOKIE_KEY = "loginCookieKey";
 export const TOKEN_HEADER_NAME = "accessKey";
-type AjaxStatus = {
-  success: number | string | (string | number)[];
-  error: number | string | (string | number)[];
-  expired: number | string | (string | number)[];
+export type AjaxStatus = {
+  success: number | string;
+  error: number | string;
+  expired: number | string;
 };
 export const AJAX_STATUS: AjaxStatus = {
   success: 2000,

@@ -1,5 +1,5 @@
 import { UITypes } from "../enum";
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import * as constant from "./constant";
 import { cookies } from "./cookie";
 import { toast } from "./ui";
@@ -15,7 +15,20 @@ export interface ResponseData<T = any> {
   data: T;
 }
 
-let reqOptions = {
+export interface ReqOptions {
+  loginCookeyKey: string;
+  tokenHeaderName: string;
+  ajaxStatus: constant.AjaxStatus;
+  ajaxData: {
+    code: string;
+    msg: string;
+    data: string;
+  };
+  responseHandle?: (res: AxiosResponse<any>) => Promise<any>;
+  logout: () => void;
+}
+
+let reqOptions: ReqOptions = {
   loginCookeyKey: constant.LOGIN_COOKIE_KEY,
   tokenHeaderName: constant.TOKEN_HEADER_NAME,
   ajaxStatus: constant.AJAX_STATUS,
@@ -100,26 +113,18 @@ const request = <T>(
 
   return req
     .then((res) => {
+      if (reqOptions.responseHandle) {
+        return reqOptions.responseHandle(res);
+      }
+
       const responseData: ResponseData = res.data || {};
 
       if (
-        responseData[reqOptions.ajaxData.code] ===
-          reqOptions.ajaxStatus.success ||
-        // @ts-ignore
-        (Array.isArray(reqOptions.ajaxStatus.success) &&
-          reqOptions.ajaxStatus.success.includes(
-            responseData[reqOptions.ajaxData.code]
-          ))
+        responseData[reqOptions.ajaxData.code] === reqOptions.ajaxStatus.success
       ) {
-        return responseData.data;
+        return responseData[reqOptions.ajaxData.data];
       } else if (
-        responseData[reqOptions.ajaxData.code] ===
-          reqOptions.ajaxStatus.expired ||
-        // @ts-ignore
-        (Array.isArray(reqOptions.ajaxStatus.expired) &&
-          reqOptions.ajaxStatus.expired.includes(
-            responseData[reqOptions.ajaxData.code]
-          ))
+        responseData[reqOptions.ajaxData.code] === reqOptions.ajaxStatus.expired
       ) {
         responseData.msg = "token已过期，请重新登录";
         reqOptions.logout();
