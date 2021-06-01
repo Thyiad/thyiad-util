@@ -10,7 +10,7 @@
     "emitDecoratorMetadata": true, // 为装饰器提供元数据的支持
     "target": "es5", // 指定 ECMAScript 目标版本: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'
     "module": "commonjs",
-    "lib": ["esnext", "dom", "scripthost"],
+    "lib": ["esnext", "dom"],
     "rootDir": "./src/",
     "outDir": "./lib/",
     "skipLibCheck": true,
