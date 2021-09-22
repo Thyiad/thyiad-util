@@ -111,9 +111,7 @@ const request = <T>(
       ) {
         return responseData[reqOptions.ajaxData.data];
       } else if (
-        responseData[reqOptions.ajaxData.code] ===
-          reqOptions.ajaxStatus.expired ||
-        res.status === 401
+        responseData[reqOptions.ajaxData.code] === reqOptions.ajaxStatus.expired
       ) {
         responseData[reqOptions.ajaxData.msg] = "token 已过期，请重新登录";
         reqOptions.logout();
@@ -122,6 +120,10 @@ const request = <T>(
       return Promise.reject(responseData);
     })
     .catch((err) => {
+      if (err.isAxiosError && err.response.status === 401) {
+        err.message = "token 已过期，请重新登录";
+        reqOptions.logout();
+      }
       config?.noToast !== true &&
         toast(
           err[reqOptions.ajaxData.msg] || err.message || "未知错误",
