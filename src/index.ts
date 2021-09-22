@@ -9,7 +9,7 @@ import * as _env from "./utils/env";
 import * as _date from "./utils/date";
 
 import { UIImplements } from "./utils/ui";
-import { ResponseData, ReqImplements } from "./utils/req";
+import { ReqImplements } from "./utils/req";
 
 export const thyStr = _str;
 export const thyCookie = cookies;
@@ -21,7 +21,7 @@ export const thyRegex = _regex;
 export const thyEnv = _env;
 export const thyDate = _date;
 
-export type { UIImplements, ReqImplements, ResponseData };
+export type { UIImplements, ReqImplements };
 export { UITypes } from "./enum";
 export interface InitOptions {
   ui: UIImplements;

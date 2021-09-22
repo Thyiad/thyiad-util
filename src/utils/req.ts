@@ -6,15 +6,6 @@ import { toast } from "./ui";
 import * as env from "./env";
 import qs from "query-string";
 
-export interface ResponseData<T = any> {
-  /** 状态码 */
-  code: number;
-  /** 提示语 */
-  msg: string;
-  /** 数据 */
-  data: T;
-}
-
 export interface ReqOptions {
   loginCookeyKey: string;
   tokenHeaderName: string;
@@ -97,19 +88,15 @@ const request = <T>(
 
   const req =
     type === "get"
-      ? axiosInstance.get<ResponseData<T>>(url, {
+      ? axiosInstance.get(url, {
           ...config,
           headers,
           params: data,
         })
-      : axiosInstance.post<ResponseData<T>>(
-          url,
-          config?.formType ? qs.stringify(data) : data,
-          {
-            ...config,
-            headers,
-          }
-        );
+      : axiosInstance.post(url, config?.formType ? qs.stringify(data) : data, {
+          ...config,
+          headers,
+        });
 
   return req
     .then((res) => {
@@ -117,16 +104,18 @@ const request = <T>(
         return reqOptions.responseHandle(res);
       }
 
-      const responseData: ResponseData = res.data || {};
+      const responseData = res.data || {};
 
       if (
         responseData[reqOptions.ajaxData.code] === reqOptions.ajaxStatus.success
       ) {
         return responseData[reqOptions.ajaxData.data];
       } else if (
-        responseData[reqOptions.ajaxData.code] === reqOptions.ajaxStatus.expired
+        responseData[reqOptions.ajaxData.code] ===
+          reqOptions.ajaxStatus.expired ||
+        res.status === 401
       ) {
-        responseData.msg = "token已过期，请重新登录";
+        responseData[reqOptions.ajaxData.msg] = "token 已过期，请重新登录";
         reqOptions.logout();
       }
 
