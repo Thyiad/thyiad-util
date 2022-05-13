@@ -29,7 +29,7 @@ export const getQuery = (urlPath?: string): { [key: string]: string } => {
     if (val == null) {
       targetQuery[key] = "";
     } else if (Array.isArray(val)) {
-      targetQuery[key] = val[val.length - 1];
+      targetQuery[key] = val[val.length - 1] || "";
     } else {
       targetQuery[key] = val;
     }
