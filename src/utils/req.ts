@@ -89,14 +89,14 @@ const request = <T>(
   const req =
     type === "get"
       ? axiosInstance.get(url, {
-          ...config,
-          headers,
-          params: data,
-        })
+        ...config,
+        headers,
+        params: data,
+      })
       : axiosInstance.post(url, config?.formType ? qs.stringify(data) : data, {
-          ...config,
-          headers,
-        });
+        ...config,
+        headers,
+      });
 
   return req
     .then((res) => {
@@ -120,13 +120,25 @@ const request = <T>(
       return Promise.reject(responseData);
     })
     .catch((err) => {
+      // 默认尝试取配置的 msg 字段
+      let errMsg = err[reqOptions.ajaxData.msg];
+      // 如果msg字段没有值，再尝试取 error.message
+      if (!errMsg && err.message) {
+        errMsg = err.message
+      }
+      // 如果是500状态，覆盖 msg
+      if (err.isAxiosError && err.response.status===500 && typeof err.response.data === 'string') {
+        errMsg = `请求发生错误：${err.response.data}`
+      }
+      // 如果是401状态，覆盖 msg
       if (err.isAxiosError && err.response.status === 401) {
-        err.message = "token 已过期，请重新登录";
+        errMsg = "token 已过期，请重新登录";
         reqOptions.logout();
       }
+      // 弹窗提示errMsg
       config?.noToast !== true &&
         toast(
-          err[reqOptions.ajaxData.msg] || err.message || "未知错误",
+          errMsg || '未知错误',
           UITypes.error
         );
       return Promise.reject(err);
