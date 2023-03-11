@@ -46,4 +46,5 @@ export default {
   thyRegex,
   thyEnv,
   thyDate,
+  thySite,
 };
