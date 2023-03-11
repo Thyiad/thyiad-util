@@ -7,6 +7,7 @@ import * as _req from "./utils/req";
 import * as _regex from "./utils/regex";
 import * as _env from "./utils/env";
 import * as _date from "./utils/date";
+import * as _site from "./utils/site";
 
 import { UIImplements } from "./utils/ui";
 import { ReqImplements } from "./utils/req";
@@ -20,6 +21,7 @@ export const thyReq = _req;
 export const thyRegex = _regex;
 export const thyEnv = _env;
 export const thyDate = _date;
+export const thySite = _site;
 
 export type { UIImplements, ReqImplements };
 export { UITypes } from "./enum";
