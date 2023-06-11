@@ -86,21 +86,24 @@ export const getGenderForIdCard = _getGenderForIdCard;
 
 /**
  * 获取文件名字
- * 从最后一个.号开始截取
  * @param path 路径
  */
-export const getFileName = (path: string): string => {
+export function getFileName(path: string, includeExt = true): string {
   if (!path) {
     return "";
   }
 
-  const index = path.lastIndexOf("/");
-  if (index < 0) {
-    return path;
+  const slashIndex = path.lastIndexOf("/");
+  const nameWithExt = slashIndex < 0 ? path : path.substr(slashIndex + 1);
+  if (includeExt) {
+    return nameWithExt;
   }
 
-  return path.substr(index + 1);
-};
+  const lastDotIndex = nameWithExt.lastIndexOf(".");
+  const nameWithoutExt =
+    lastDotIndex < 0 ? nameWithExt : nameWithExt.substr(0, lastDotIndex);
+  return nameWithoutExt;
+}
 
 /**
  * 把html字符串格式化：\n、\t、\"
