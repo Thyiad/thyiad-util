@@ -15,6 +15,7 @@ export interface ReqOptions {
     msg: string;
     data: string;
   };
+  timeout: number;
   responseHandle?: (res: AxiosResponse<any>) => Promise<any>;
   logout: () => void;
 }
@@ -24,6 +25,7 @@ let reqOptions: ReqOptions = {
   tokenHeaderName: constant.TOKEN_HEADER_NAME,
   ajaxStatus: constant.AJAX_STATUS,
   ajaxData: constant.AJAX_DATA,
+  timeout: 180000,
   logout: () => {
     if (!env.canUseWindow()) {
       return;
@@ -42,14 +44,19 @@ export const initImplements = (options: ReqImplements) => {
     ...reqOptions,
     ...options,
   };
+  axiosInstance = axios.create({
+    baseURL: "/",
+    timeout: reqOptions.timeout,
+    responseType: "json",
+  });
 };
 
 /**
  * axios实例
  */
-const axiosInstance = axios.create({
+let axiosInstance = axios.create({
   baseURL: "/",
-  timeout: 30000,
+  timeout: reqOptions.timeout,
   responseType: "json",
 });
 
@@ -89,14 +96,14 @@ const request = <T>(
   const req =
     type === "get"
       ? axiosInstance.get(url, {
-        ...config,
-        headers,
-        params: data,
-      })
+          ...config,
+          headers,
+          params: data,
+        })
       : axiosInstance.post(url, config?.formType ? qs.stringify(data) : data, {
-        ...config,
-        headers,
-      });
+          ...config,
+          headers,
+        });
 
   return req
     .then((res) => {
@@ -124,11 +131,15 @@ const request = <T>(
       let errMsg = err[reqOptions.ajaxData.msg];
       // 如果msg字段没有值，再尝试取 error.message
       if (!errMsg && err.message) {
-        errMsg = err.message
+        errMsg = err.message;
       }
       // 如果是500状态，覆盖 msg
-      if (err.isAxiosError && err.response.status===500 && typeof err.response.data === 'string') {
-        errMsg = `请求发生错误：${err.response.data}`
+      if (
+        err.isAxiosError &&
+        err.response.status === 500 &&
+        typeof err.response.data === "string"
+      ) {
+        errMsg = `请求发生错误：${err.response.data}`;
       }
       // 如果是401状态，覆盖 msg
       if (err.isAxiosError && err.response.status === 401) {
@@ -136,11 +147,7 @@ const request = <T>(
         reqOptions.logout();
       }
       // 弹窗提示errMsg
-      config?.noToast !== true &&
-        toast(
-          errMsg || '未知错误',
-          UITypes.error
-        );
+      config?.noToast !== true && toast(errMsg || "未知错误", UITypes.error);
       return Promise.reject(err);
     });
 };
